@@ -1,0 +1,134 @@
+{% extends "dashboard.html" %}
+{% block content %}
+
+
+
+<div class="container">
+    <!-- Card Start -->
+    <div class="card">
+        <div class="row">
+            <div class="col-md-6 px-3">
+                <div class="card-block px-6 py-3">
+                    <h4 class="card-title text-center">Add patient</h4>
+                    {% include "includes/toast.html" %}
+                    <p class="card-text text-center py-3">
+                        shadow to the card and some adjustments to the prev/next buttons and the indicators is rounded now. As in Bootstrap 3
+                    </p>
+                    <div class="text-center"> <!-- Center the button -->
+                        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#exampleCentralModal4">Add</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Carousel start -->
+            <div class="col-md-6">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block" src="https://www.ox.ac.uk/sites/files/oxford/field/field_image_main/GettyImages-1217096099%203.jpg" style="height: 251px;">
+                    </div>
+                </div>
+            </div>
+            <!-- End of carousel -->
+        </div>
+    </div>
+    <!-- End of card -->
+</div>
+
+<div class="modal fade" id="exampleCentralModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Patient</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form method="post" action="{% url "quick_add_patient" %}">
+            {% csrf_token %}
+            <!-- 2 column grid layout with text inputs for the first and last names -->
+            <div class="row mb-4">
+              <div class="col">
+                <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                  <input name="name" type="text" id="form6Example1" class="form-control">
+                  <label class="form-label" for="form6Example1" style="margin-left: 0px;">Name</label>
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+              </div>
+              <div class="col">
+                <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                  <input name="age" type="number" id="form6Example2" class="form-control">
+                  <label class="form-label" for="form6Example2" style="margin-left: 0px;">Age</label>
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
+              </div>
+            </div>
+
+            <div class="row">
+                <!-- Text input -->
+                <div class="form-group col-md-6 mb-4">
+                    {{ form.gender }}
+                    <label for="floatingSelect">Gender</label>
+                </div>
+
+                <!-- Text input -->
+                <div class="form-outline col-md-6 mb-4" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="mobile" type="number" id="form6Example4" class="form-control">
+                    <label class="form-label" for="form6Example4" style="margin-left: 0px;">Mobile</label>
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 55.2px;"></div><div class="form-notch-trailing"></div></div></div>
+            </div>
+
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="address" type="text" id="form6Example1" class="form-control">
+                    <label class="form-label" for="form6Example1" style="margin-left: 0px;">Address</label>
+                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+                </div>
+                
+                <!-- Address input -->
+                    <div class="form-outline mb-4 col-md-6" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="next_visit" type="number" id="form6Example5" class="form-control">
+                    <label class="form-label" for="form6Example5" style="margin-left: 0px;">Next Visit</label>
+                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 40px;"></div><div class="form-notch-trailing"></div></div></div>
+            </div>
+            
+
+            <div class="row mb-4">
+                <div class="col">
+                  <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="email" type="email" id="form6Example1" class="form-control">
+                    <label class="form-label" for="form6Example1" style="margin-left: 0px;">Email</label>
+                  <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+                </div>
+                <div class="col">
+                  <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="amount" type="number" id="form6Example2" class="form-control">
+                    <label class="form-label" for="form6Example2" style="margin-left: 0px;">Amount</label>
+                  <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                  <input name="note" type="text" id="form6Example1" class="form-control">
+                  <label class="form-label" for="form6Example1" style="margin-left: 0px;">Note</label>
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+              </div>
+
+            <div class="row">
+                <!-- Number input -->
+            <div class="form-outline col-md-6 mb-4" data-mdb-input-init="" data-mdb-input-initialized="true">
+                <textarea name="detail" type="text" id="form6Example6" class="form-control" rows="4"></textarea>
+                <label class="form-label" for="form6Example6" style="margin-left: 0px;">Detail</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 44px;"></div><div class="form-notch-trailing"></div></div></div>
+  
+              <!-- Message input -->
+              <div class="form-outline col-md-6 mb-4" data-mdb-input-init="" data-mdb-input-initialized="true">
+                <textarea name="medecine_detail" class="form-control" id="form6Example7" rows="4"></textarea>
+                <label class="form-label" for="form6Example7" style="margin-left: 0px;">Medecine Detail</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 135.2px;"></div><div class="form-notch-trailing"></div></div></div>
+                 
+            </div> 
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-success btn-block" data-mdb-ripple-init="">Confirm</button>
+          </form>
+    </div>
+  </div>
+{% endblock content %}

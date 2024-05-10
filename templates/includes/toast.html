@@ -1,0 +1,68 @@
+{% if messages %}
+    {% for msg in messages %}
+            <div  id="toast" style="z-index:9999 ;" class="bg-{{msg.tags}} toastbtn row mt-3">
+              <p class="text-white float-left">{{ msg }}<span><i class="fa fa-close toast-btn"></i></span></p>
+            </div>
+
+            <style>
+              .bg-error{
+                background-color: #d4403b;
+              }
+            </style>
+            
+            
+    {% endfor %}
+{% endif %}
+
+<style>
+  #toast{
+    border-radius: 2px; width: 380px; height: 50px; 
+    text-align: center; 
+    padding-bottom: 15px;
+    padding-top: 12px;
+    font-size: 18px; 
+    position: fixed;
+    bottom: 5px;
+    right: 8px;
+    margin-right: 5px;
+  }
+
+  .toast-btn{
+    cursor: pointer; padding-left: 18px;
+  }
+</style>
+
+{% comment %} <script>
+  setTimeout(function() {
+    $("#toast").hide();
+  }, 5000);
+
+  $(".toast-btn").click(function(){
+    $("#toast").hide();
+  })
+</script> {% endcomment %}
+
+
+
+<script>
+    // Hide the toast button after 5000 milliseconds (5 seconds)
+    setTimeout(function() {
+    var toastButton = document.querySelector(".toastbtn");
+    if (toastButton) {
+        toastButton.style.display = "none";
+    }
+    }, 5000);
+
+    // Hide the toast button when clicked
+    document.addEventListener("DOMContentLoaded", function() {
+    var toastButton = document.querySelector(".toast-btn");
+    if (toastButton) {
+        toastButton.addEventListener("click", function() {
+        var toastButton = document.querySelector(".toastbtn");
+        if (toastButton) {
+            toastButton.style.display = "none";
+        }
+        });
+    }
+    });
+</script>

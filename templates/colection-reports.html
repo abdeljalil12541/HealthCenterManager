@@ -1,0 +1,232 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<div class="card card-bordered">
+    <div class="card-header h5 text-center">
+        Collection Reports
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4 ms-2">
+                <form method="get" action="" style="display: inline-block;">
+                    <div class="d-flex">
+                        <div><span>
+                            <select name="chart_type" class="form-select form-select-sm select-chart-type">
+                                <option>Select Type</option>
+                                    <option value="daily" {% if request.GET.chart_type and request.GET.chart_type == 'daily' %}selected{% endif %}>Daily</option>
+                                    <option value="monthly" {% if request.GET.chart_type and request.GET.chart_type == 'monthly' %}selected{% endif %}>Monthly</option>
+                                    <option value="yearly" {% if request.GET.chart_type and request.GET.chart_type == 'yearly' %}selected{% endif %}>Yearly</option>
+                            </select>
+                        </span>
+                        </div>
+                        <div>                    
+                            <button style="display: inline-block; margin-left: 5px;" type="submit" class="btn btn-secondary btn-sm" style="margin-bottom: 3.4px; height: 29px;">Change</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            {% if request.GET.chart_type and request.GET.chart_type != 'yearly'%}
+            <form method="get" action="" class="col-3">
+                <input type="hidden" name="chart_type" value="{% if request.GET.chart_type %}{{request.GET.chart_type}}{% else %}daily{% endif %}">
+                <div class=" d-flex justify-content-between" style="margin-left: 40px;">
+                    <!-- Years -->
+                    <select name="year" class="mb-3 col-12 form-select form-select-sm">
+                        <option>Select Year</option>
+                        {% for year in years %}
+                            <option value="{{year.visit_date__year}}" {% if currentYear == year.visit_date__year %}selected{% endif %}>{{year.visit_date__year}}</option>
+                        {% endfor %}
+                    </select>
+    
+                    {% if request.GET.chart_type and request.GET.chart_type != 'monthly'%}
+                    <!-- Months -->
+                    <select name="month" class="mb-3 col-12 form-select form-select-sm ms-2">
+                        <option>Select Month</option>
+                        {% for month in monthNames %}
+                            <option value="{{month.id}}" {% if currentMonth == month.id %}selected{% endif %}>{{month.name}}</option>
+                        {% endfor %}
+                    </select>
+                    {% endif %}
+                    <button class="btn btn-secondary btn-sm ms-1" type="submit" style="margin-bottom: 3.4px; height: 29px;">Submit</button>
+                </div>
+            </form>
+            {% endif %}
+
+            
+            
+            {% if not request.GET.chart_type or request.GET.chart_type == 'daily' %}
+            <div class="col-12">
+                <div id="chartDaily"></div>
+            </div>
+            {% endif %}
+            
+
+            {% if request.GET.chart_type and request.GET.chart_type == 'monthly' %}
+            <div class="col-12">
+                <div id="chartMonthly"></div>
+            </div>
+            {% endif %}
+            
+
+            {% if request.GET.chart_type and request.GET.chart_type == 'yearly' %}
+            <div class="col-12">
+                <div id="chartYearly"></div>
+            </div>
+            {% endif %}
+
+
+        </div>
+        
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var dailyChartLabels = {{ dailyChart.dailyChartLabels|safe }};
+        var dailyChartValues = {{ dailyChart.dailyChartValues|safe }};
+        var options = {
+            series: [{
+              name: "Desktops",
+              data: dailyChartValues,
+            }],
+                chart: {
+                height: 350,
+                type: 'line',
+                zoom: {
+                enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            title: {
+                text: 'Daily Chart',
+                align: 'left'
+            },
+            grid: {
+                row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: dailyChartLabels,
+            },
+            yaxis: {
+                stepSize:100,
+            }
+            };
+    
+            var chart = new ApexCharts(document.querySelector("#chartDaily"), options);
+            chart.render();
+    
+
+            // Change Chart Type
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var monthlyChartLabels = {{ monthlyChart.monthlyChartLabels|safe }};
+        var monthlyChartValues = {{ monthlyChart.monthlyChartValues|safe }};
+        var options = {
+            series: [{
+              name: "Desktops",
+              data: monthlyChartValues,
+            }],
+                chart: {
+                height: 350,
+                type: 'line',
+                zoom: {
+                enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            title: {
+                text: 'Monthly Chart',
+                align: 'left'
+            },
+            grid: {
+                row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: monthlyChartLabels,
+            },
+            yaxis: {
+                stepSize:100,
+            }
+            };
+    
+            var chart = new ApexCharts(document.querySelector("#chartMonthly"), options);
+            chart.render();
+    
+
+            // Change Chart Type
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var yearlyChartLabels = {{ yearlyChart.yearlyChartLabels|safe }};
+        var yearlyChartValues = {{ yearlyChart.yearlyChartValues|safe }};
+        var options = {
+            series: [{
+              name: "Year",
+              data: yearlyChartValues,
+            }],
+                chart: {
+                height: 350,
+                type: 'line',
+                zoom: {
+                enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight'
+            },
+            title: {
+                text: 'Yearly Chart',
+                align: 'left'
+            },
+            grid: {
+                row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+                },
+            },
+            xaxis: {
+                categories: yearlyChartLabels,
+            },
+            yaxis: {
+                stepSize:100,
+            }
+            };
+    
+            var chart = new ApexCharts(document.querySelector("#chartYearly"), options);
+            chart.render();
+    
+
+            // Change Chart Type
+    });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+{% endblock content %}

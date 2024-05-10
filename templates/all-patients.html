@@ -1,0 +1,227 @@
+{% extends "dashboard.html" %}
+{% block content %}
+{% include "includes/toast.html" %}
+
+<h3 class="text-center" style="margin-top: -28px;">All Patients ({{patients.count}})</h3><a data-toggle="modal" data-target="#exampleCentralModal4"><span class="float-end bg-success text-white btn" style="margin-top: -42px;">Add Patients<i style="margin-left: 5px;" class="fa fa-plus"></i></span></a>
+<h5 class="float-end"></h5>
+<table class="table align-middle mt-4 mb-0 bg-white mb-2" id="datatable">
+    <thead class="bg-light">
+      <tr>
+        <th>Sr .no</th>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Visit</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Amount</th>
+        <th>action</th>
+      </tr>
+    </thead>
+
+    
+    <tbody>
+        {% if patients %}
+            {% for patient in patients %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{patient.added_time|date:'d-m-Y'}}</td>
+                    <td>
+                    <div class="d-flex align-items-center">
+                        <!-- <img
+                            src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                            alt=""
+                            style="width: 45px; height: 45px"
+                            class="rounded-circle"
+                            /> -->
+                        <div class="ms-3">
+                        <p class="fw-bold mb-1">{{patient.name}}</p>
+                        <!-- <p class="text-muted mb-0">john.doe@gmail.com</p> -->
+                        </div>
+                    </div>
+                  </td>
+                  <td>
+                    <a href="{% url 'add_visit' patient.id %}" class="btn-primary badge" style="text-decoration: none;">Add Visit</a>
+                  </td>
+                  <td>{{patient.email}}</td>
+                    <td>{{patient.age}}</td>
+                    <td style="width: 250px;">{{patient.total_visit_amount}} MAD</td>
+                    <td style="padding-right:;">
+                        <a href="{% url 'update_patient' patient.id %}"><i class="fa fa-edit" style="cursor: pointer;"></i></a>
+                        <a href="{% url 'delete_patient' patient.id %}" onclick="return confirm('Are You sure you want to delete?')"><i class="fa fa-trash text-danger" style="cursor: pointer; padding-left: 5px;"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+      {% endif %}
+    </tbody>
+
+</table>
+<br>
+<br>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleCentralModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Patient</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <form method="post" action="{% url "all_patients" %}">
+            {% csrf_token %}
+            <!-- 2 column grid layout with text inputs for the first and last names -->
+            <div class="row mb-4">
+              <div class="col">
+                <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                  <input name="name" type="text" id="form6Example1" class="form-control">
+                  <label class="form-label" for="form6Example1" style="margin-left: 0px;">Name</label>
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+              </div>
+              <div class="col">
+                <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                  <input name="age" type="number" id="form6Example2" class="form-control">
+                  <label class="form-label" for="form6Example2" style="margin-left: 0px;">Age</label>
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
+              </div>
+            </div>
+
+            <div class="row">
+                <!-- Text input -->
+                <div class="form-group col-md-6 mb-4">
+                  {{ form.gender }}
+                    <label for="floatingSelect">Gender</label>
+                </div>
+
+                <!-- Text input -->
+                <div class="form-outline col-md-6 mb-4" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="mobile" type="number" id="form6Example4" class="form-control">
+                    <label class="form-label" for="form6Example4" style="margin-left: 0px;">Mobile</label>
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 55.2px;"></div><div class="form-notch-trailing"></div></div></div>
+            </div>
+
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="address" type="text" id="form6Example1" class="form-control">
+                    <label class="form-label" for="form6Example1" style="margin-left: 0px;">Address</label>
+                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+                </div>
+                
+                <!-- Address input -->
+                    <div class="form-outline mb-4 col-md-6" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="next_visit" type="number" id="form6Example5" class="form-control">
+                    <label class="form-label" for="form6Example5" style="margin-left: 0px;">Next Visit</label>
+                    <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 40px;"></div><div class="form-notch-trailing"></div></div></div>
+            </div>
+            
+
+            <div class="row mb-4">
+                <div class="col">
+                  <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="email" type="email" id="form6Example1" class="form-control">
+                    <label class="form-label" for="form6Example1" style="margin-left: 0px;">Email</label>
+                  <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+                </div>
+                <div class="col">
+                  <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                    <input name="amount" type="number" id="form6Example2" class="form-control">
+                    <label class="form-label" for="form6Example2" style="margin-left: 0px;">Amount</label>
+                  <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68px;"></div><div class="form-notch-trailing"></div></div></div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-outline" data-mdb-input-init="" data-mdb-input-initialized="true">
+                  <input name="note" type="text" id="form6Example1" class="form-control">
+                  <label class="form-label" for="form6Example1" style="margin-left: 0px;">Note</label>
+                <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 68.8px;"></div><div class="form-notch-trailing"></div></div></div>
+              </div>
+
+            <div class="row">
+                <!-- Number input -->
+            <div class="form-outline col-md-6 mb-4" data-mdb-input-init="" data-mdb-input-initialized="true">
+                <textarea name="detail" type="text" id="form6Example6" class="form-control" rows="4"></textarea>
+                <label class="form-label" for="form6Example6" style="margin-left: 0px;">Detail</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 44px;"></div><div class="form-notch-trailing"></div></div></div>
+  
+              <!-- Message input -->
+              <div class="form-outline col-md-6 mb-4" data-mdb-input-init="" data-mdb-input-initialized="true">
+                <textarea name="medecine_detail" class="form-control" id="form6Example7" rows="4"></textarea>
+                <label class="form-label" for="form6Example7" style="margin-left: 0px;">Medecine Detail</label>
+              <div class="form-notch"><div class="form-notch-leading" style="width: 9px;"></div><div class="form-notch-middle" style="width: 135.2px;"></div><div class="form-notch-trailing"></div></div></div>
+                 
+            </div> 
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-success btn-block" data-mdb-ripple-init="">Confirm</button>
+          </form>
+    </div>
+  </div>
+  
+
+  
+<!-- Add this script tag to include jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Add this script to handle the edit icon click event -->
+<script>
+$(document).ready(function() {
+  $(".edit-patient").click(function(e) {
+    e.preventDefault(); // Prevent the default link behavior
+    var patientId = $(this).data('patient-id'); // Get the patient ID from the data attribute
+
+    // Make an AJAX request to fetch the patient's data
+    $.ajax({
+      url: '/get-patient-data/' + patientId + '/', // URL to fetch patient data (replace with your URL)
+      method: 'GET',
+      success: function(data) {
+        // Update the modal content with the fetched patient's data
+        $("#modal-patient-name").val(data.name);
+        $("#modal-patient-age").val(data.age);
+        // Update other fields similarly
+        // Show the modal
+        $("#exampleModal").modal('show');
+      },
+      error: function(xhr, errmsg, err) {
+        console.log(xhr.status + ": " + xhr.responseText); // Log any errors
+      }
+    });
+  });
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.6/js/dataTables.bootstrap5.js"></script>
+
+<script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css">
+
+
+<script>
+  new DataTable('#datatable', {
+    layout: {
+        topStart: {
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        }
+    }
+  });
+</script>
+
+{% endblock content %}

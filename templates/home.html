@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+    <h1><a class="text-danger" href="{% url "doctor_logout" %}">Log out</a></h1>
+    <p><a class="text-dark" href="{% url "doctor_reset_password" %}">Reset Password</a></p>
+    <p><a class="text-dark" href="{% url "doctor_dashboard" %}">Doctor Dashboard</a></p>
+    {% else %}
+    <h1><a href="{% url "doctor_login" %}">Doctor Login</a></h1>
+    {% endif %}
+{% endblock content %}
